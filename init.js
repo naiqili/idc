@@ -11,13 +11,13 @@ function startUserMedia(stream) {
 }
 
 $(document).ready(function(){
-    $.get("./cgi-bin/task_describ.py",function(data,status){
+    $.get("/cgi-bin/task_describ.py",function(data,status){
         $('#task_describ').text(data)
     });
     
     $('#btn_test').click(function(){
         alert('start');
-        $.post('./cgi-bin/audio_test.py',
+        $.post('/cgi-bin/audio_test.py',
             {text: 'interesting'},
             function(data, status){
                 alert(data);
@@ -52,7 +52,7 @@ $(document).ready(function(){
             formData.append('text', txt_sent1);
             formData.append('audio', blob);
             var request = new XMLHttpRequest();
-            request.open("POST", "./cgi-bin/process.py");
+            request.open("POST", "/cgi-bin/process.py");
             request.send(formData);
             request.onreadystatechange = function(){
                 if(request.readyState === 4 && request.status === 200){
