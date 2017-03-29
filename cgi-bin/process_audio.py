@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import cgi, sys, logging
+import speech_recognition as sr
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level = logging.DEBUG, format = "%(asctime)s: %(levelname)s: %(message)s", datefmt='[%d/%b/%Y %H:%M:%S]', filename='/idc_data/process_audio.log')
@@ -14,8 +15,16 @@ with open('/idc_data/'+fileName+'.wav', 'wb') as f:
 logger.debug("Audio saved as %s" % (fileName))
 
 def getASR(fileName):
-    return "ASR for wav %s" % fileName
+    r = sr.Recognizer()
+    with sr.AudioFile('/idc_data/'+fileName+'.wav') as source:
+        _audio = r.record(source)
+    try:
+        return r.recognize_google(_audio)
+    except sr.RequestError as e:
+        return ("Could not request results{0}".format(e))
+        
+asr_res = getASR(fileName)
 
 print "Content-type:text/html"
 print
-print getASR(fileName)
+print asr_res
