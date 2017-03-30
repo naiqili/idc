@@ -18,6 +18,7 @@ def getASR(fileName):
     r = sr.Recognizer()
     with sr.AudioFile('/idc_data/'+fileName+'.wav') as source:
         _audio = r.record(source)
+        logger.debug("Audio size: ")
     try:
         return r.recognize_google(_audio)
     except sr.RequestError as e:
